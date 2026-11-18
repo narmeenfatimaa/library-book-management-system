@@ -3,21 +3,35 @@ package library;
 import java.util.ArrayList;
 
 /**
- * Holds the list of books and performs all library operations
- * (add, view, find, update, delete, change status).
+ * Holds the list of books and performs all library operations: add, view,
+ * find, update, delete and change status.
  * <p>
- * Books are stored in an ArrayList in memory only, so the data is lost when
- * the application closes. Invalid operations throw an
- * IllegalArgumentException with a message that can be shown to the user.
+ * Books are stored in an {@code ArrayList} in memory only, so the data is
+ * lost when the application closes. Invalid operations throw an
+ * {@code IllegalArgumentException} with a message that can be shown to the user.
+ *
+ * @author Narmeen Fatima
+ * @author Faique Mustafa
  */
 public class LibraryManager {
 
     private final ArrayList<Book> books = new ArrayList<>();
 
     /**
+     * Creates an empty library.
+     */
+    public LibraryManager() {
+        // The book list starts empty.
+    }
+
+    /**
      * Adds a new Available book after validating the input.
-     * Throws IllegalArgumentException if the ID, title or author is empty,
-     * or if a book with the same ID already exists.
+     *
+     * @param id     the ID of the new book (must not be empty or already used)
+     * @param title  the title of the new book (must not be empty)
+     * @param author the author of the new book (must not be empty)
+     * @throws IllegalArgumentException if the ID, title or author is empty,
+     *                                  or if a book with the same ID already exists
      */
     public void addBook(String id, String title, String author) {
         String cleanId = requireText(id, "Book ID");
@@ -34,24 +48,36 @@ public class LibraryManager {
     /**
      * Returns a copy of the book list, so callers cannot change the
      * internal list by accident.
+     *
+     * @return a new list containing all books in the order they were added
      */
     public ArrayList<Book> getAllBooks() {
         return new ArrayList<>(books);
     }
 
-    /** Returns true if the library has no books. */
+    /**
+     * Checks whether the library has no books.
+     *
+     * @return true if there are no books, false otherwise
+     */
     public boolean isEmpty() {
         return books.isEmpty();
     }
 
-    /** Returns the number of books in the library. */
+    /**
+     * Returns the number of books in the library.
+     *
+     * @return the number of books
+     */
     public int getBookCount() {
         return books.size();
     }
 
     /**
      * Finds a book by ID using linear search.
-     * Returns the book, or null if no book has that ID.
+     *
+     * @param id the ID to look for (spaces around it and letter case are ignored)
+     * @return the matching book, or null if no book has that ID
      */
     public Book findBookById(String id) {
         int index = findIndexById(id);
@@ -63,8 +89,14 @@ public class LibraryManager {
 
     /**
      * Updates the ID, title and author of an existing book.
-     * Throws IllegalArgumentException if any field is empty, if no book has
-     * currentId, or if newId already belongs to a different book.
+     *
+     * @param currentId the current ID of the book to update
+     * @param newId     the new ID (may be the same as the current ID)
+     * @param newTitle  the new title (must not be empty)
+     * @param newAuthor the new author (must not be empty)
+     * @throws IllegalArgumentException if any value is empty, if no book has
+     *                                  the current ID, or if the new ID already
+     *                                  belongs to a different book
      */
     public void updateBook(String currentId, String newId, String newTitle, String newAuthor) {
         String cleanCurrentId = requireText(currentId, "Book ID");
@@ -92,7 +124,9 @@ public class LibraryManager {
 
     /**
      * Deletes the book with the given ID.
-     * Throws IllegalArgumentException if the ID is empty or no book has it.
+     *
+     * @param id the ID of the book to delete
+     * @throws IllegalArgumentException if the ID is empty or no book has that ID
      */
     public void deleteBook(String id) {
         String cleanId = requireText(id, "Book ID");
@@ -106,8 +140,11 @@ public class LibraryManager {
 
     /**
      * Sets the status (Available, Issued or Reserved) of the book with the given ID.
-     * Throws IllegalArgumentException if the ID is empty, no book has it,
-     * or the status is null.
+     *
+     * @param id        the ID of the book
+     * @param newStatus the new status
+     * @throws IllegalArgumentException if the ID is empty, no book has that ID,
+     *                                  or the status is null
      */
     public void setStatus(String id, BookStatus newStatus) {
         String cleanId = requireText(id, "Book ID");
@@ -122,9 +159,13 @@ public class LibraryManager {
         books.get(index).setStatus(newStatus);
     }
 
-    // Linear search: checks each book from the start of the list until the
-    // ID matches. IDs are compared ignoring upper/lower case ("b1" equals "B1").
-    // Returns the position in the list, or -1 if not found.
+    /**
+     * Linear search: checks each book from the start of the list until the
+     * ID matches. IDs are compared ignoring upper/lower case ("b1" equals "B1").
+     *
+     * @param id the ID to look for
+     * @return the position of the book in the list, or -1 if not found
+     */
     private int findIndexById(String id) {
         if (id == null) {
             return -1;
@@ -138,7 +179,14 @@ public class LibraryManager {
         return -1;
     }
 
-    // Returns the trimmed text, or throws an error if it is null or empty.
+    /**
+     * Removes spaces around a text value and rejects empty values.
+     *
+     * @param value     the text to check
+     * @param fieldName the name of the field, used in the error message
+     * @return the trimmed text
+     * @throws IllegalArgumentException if the text is null or empty
+     */
     private static String requireText(String value, String fieldName) {
         if (value == null || value.trim().isEmpty()) {
             throw new IllegalArgumentException(fieldName + " cannot be empty.");

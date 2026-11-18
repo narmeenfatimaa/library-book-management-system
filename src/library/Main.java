@@ -6,8 +6,17 @@ import javax.swing.UIManager;
 /**
  * Entry point of the Library Book Management System.
  * Creates the library logic object and opens the Swing window.
+ *
+ * @author Narmeen Fatima
+ * @author Faique Mustafa
  */
 public class Main {
+
+    /**
+     * Not used: this class only contains the {@code main} method.
+     */
+    private Main() {
+    }
 
     /**
      * Starts the application.

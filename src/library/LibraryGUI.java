@@ -27,6 +27,9 @@ import javax.swing.table.DefaultTableModel;
  * It shows the book form, the action buttons and a table of all books, and
  * passes every action to the LibraryManager. Errors thrown by the manager are
  * caught here and shown to the user in a dialog.
+ *
+ * @author Narmeen Fatima
+ * @author Faique Mustafa
  */
 public class LibraryGUI extends JFrame {
 
@@ -35,34 +38,46 @@ public class LibraryGUI extends JFrame {
     private static final String EMPTY_LIBRARY_MESSAGE =
             "The library is empty. Add a book using the form above.";
 
+    /** The object that stores the books and performs the operations. */
     private final LibraryManager manager;
 
-    // Form components
+    /** Text field for the book ID. */
     private final JTextField idField = new JTextField(20);
+    /** Text field for the book title. */
     private final JTextField titleField = new JTextField(20);
+    /** Text field for the book author. */
     private final JTextField authorField = new JTextField(20);
+    /** Selection box for the book status. */
     private final JComboBox<BookStatus> statusCombo = new JComboBox<>(BookStatus.values());
 
-    // Buttons
+    /** Button that adds a book. */
     private final JButton addButton = new JButton("Add");
+    /** Button that updates a book. */
     private final JButton updateButton = new JButton("Update");
+    /** Button that deletes a book. */
     private final JButton deleteButton = new JButton("Delete");
+    /** Button that changes the status of a book. */
     private final JButton statusButton = new JButton("Set Status");
+    /** Button that clears the form. */
     private final JButton clearButton = new JButton("Clear");
 
-    // Table
+    /** Data of the table (one row per book). */
     private final DefaultTableModel tableModel;
+    /** Table that displays all books. */
     private final JTable bookTable;
 
-    // Labels at the bottom of the window
+    /** Shows the result of the last action (success or error). */
     private final JLabel messageLabel = new JLabel(" ");
+    /** Shows the number of books, or the empty-library message. */
     private final JLabel countLabel = new JLabel();
 
-    // ID of the book currently selected in the table (null if none is selected)
+    /** ID of the book currently selected in the table (null if none is selected). */
     private String selectedBookId = null;
 
     /**
      * Builds the window and shows the current books of the given manager.
+     *
+     * @param manager the object that stores the books and performs the operations
      */
     public LibraryGUI(LibraryManager manager) {
         super("Library Book Management System");
@@ -96,6 +111,10 @@ public class LibraryGUI extends JFrame {
 
     // ---------- Building the window ----------
 
+    /**
+     * Creates the form, the buttons, the table and the message labels
+     * and places them in the window.
+     */
     private void buildLayout() {
         JPanel formPanel = new JPanel(new GridBagLayout());
         formPanel.setBorder(BorderFactory.createTitledBorder("Book Details"));
@@ -128,7 +147,14 @@ public class LibraryGUI extends JFrame {
         setContentPane(root);
     }
 
-    // Adds one "label + component" row to the form.
+    /**
+     * Adds one row (a label and an input component) to the form.
+     *
+     * @param panel     the form panel
+     * @param row       the row number, starting at 0
+     * @param labelText the text of the label
+     * @param field     the input component shown beside the label
+     */
     private void addFormRow(JPanel panel, int row, String labelText, java.awt.Component field) {
         GridBagConstraints labelConstraints = new GridBagConstraints();
         labelConstraints.gridx = 0;
@@ -148,6 +174,10 @@ public class LibraryGUI extends JFrame {
 
     // ---------- Connecting events ----------
 
+    /**
+     * Connects the buttons and the table to the methods that handle them.
+     * Selecting a table row fills the form with that book's details.
+     */
     private void connectEvents() {
         addButton.addActionListener(e -> addBook());
         updateButton.addActionListener(e -> updateBook());
@@ -181,6 +211,9 @@ public class LibraryGUI extends JFrame {
 
     // ---------- Button actions ----------
 
+    /**
+     * Handles the Add button: adds a new book using the form values.
+     */
     private void addBook() {
         try {
             String id = idField.getText().trim();
@@ -194,6 +227,10 @@ public class LibraryGUI extends JFrame {
         }
     }
 
+    /**
+     * Handles the Update button: changes the ID, title and author of the
+     * selected book (or of the book whose ID is typed in the form).
+     */
     private void updateBook() {
         try {
             String newId = idField.getText().trim();
@@ -207,6 +244,10 @@ public class LibraryGUI extends JFrame {
         }
     }
 
+    /**
+     * Handles the Delete button: deletes the selected book after the user
+     * confirms.
+     */
     private void deleteBook() {
         try {
             String targetId = getTargetId();
@@ -223,6 +264,10 @@ public class LibraryGUI extends JFrame {
         }
     }
 
+    /**
+     * Handles the Set Status button: gives the selected book the status
+     * chosen in the status box.
+     */
     private void setBookStatus() {
         try {
             String targetId = getTargetId();
@@ -238,8 +283,12 @@ public class LibraryGUI extends JFrame {
 
     // ---------- Helper methods ----------
 
-    // The book to update, delete or change status: the selected table row if there
-    // is one, otherwise the ID typed in the form.
+    /**
+     * Finds out which book an action applies to: the selected table row if there
+     * is one, otherwise the ID typed in the form.
+     *
+     * @return the ID of the target book
+     */
     private String getTargetId() {
         if (selectedBookId != null) {
             return selectedBookId;
@@ -247,7 +296,10 @@ public class LibraryGUI extends JFrame {
         return idField.getText();
     }
 
-    // Reloads the table from the manager and updates the book count message.
+    /**
+     * Reloads the table from the manager and updates the book count message
+     * (or the empty-library message).
+     */
     private void refreshTable() {
         tableModel.setRowCount(0);
         for (Book book : manager.getAllBooks()) {
@@ -262,7 +314,9 @@ public class LibraryGUI extends JFrame {
         }
     }
 
-    // Empties the form, resets the status box and removes the table selection.
+    /**
+     * Empties the form, resets the status box and removes the table selection.
+     */
     private void clearForm() {
         idField.setText("");
         titleField.setText("");
@@ -272,19 +326,33 @@ public class LibraryGUI extends JFrame {
         selectedBookId = null;
     }
 
+    /**
+     * Shows a success message in green at the bottom of the window.
+     *
+     * @param message the text to show
+     */
     private void showSuccess(String message) {
         messageLabel.setForeground(SUCCESS_COLOR);
         messageLabel.setText(message);
     }
 
-    // Shows an error message in a dialog and in the message label.
+    /**
+     * Shows an error message in a dialog and in red at the bottom of the window.
+     *
+     * @param message the error text to show
+     */
     void showError(String message) {
         messageLabel.setForeground(ERROR_COLOR);
         messageLabel.setText("Error: " + message);
         JOptionPane.showMessageDialog(this, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    // Asks the user to confirm deleting a book. Returns true if they choose Yes.
+    /**
+     * Asks the user to confirm deleting a book.
+     *
+     * @param book the book that is about to be deleted
+     * @return true if the user chose Yes, false otherwise
+     */
     boolean confirmDelete(Book book) {
         int choice = JOptionPane.showConfirmDialog(this,
                 "Delete book " + book.getId() + " (" + book.getTitle() + ")?",
