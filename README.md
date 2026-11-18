@@ -2,7 +2,7 @@
 
 Java Swing desktop application for the Software Construction Open-Ended Lab (OEL).
 
-**Group members:** [MEMBER 1 NAME – REG NO] and [MEMBER 2 NAME – REG NO]
+**Group members:** Narmeen Fatima (504271) and Faique Mustafa (534731)
 
 ## Status
 Project structure created. Features are added batch by batch (see Git history).
