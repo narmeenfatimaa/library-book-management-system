@@ -1,8 +1,11 @@
 package library;
 
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
 /**
  * Entry point of the Library Book Management System.
- * The Swing interface is attached in a later step.
+ * Creates the library logic object and opens the Swing window.
  */
 public class Main {
 
@@ -12,7 +15,18 @@ public class Main {
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        System.out.println("Library Book Management System - project initialized.");
-        System.out.println("Running on Java " + System.getProperty("java.version"));
+        try {
+            // Use the look and feel of the operating system (for example macOS).
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            // If this fails, Swing simply uses its default look.
+        }
+
+        // Swing windows should be created on the Event Dispatch Thread.
+        SwingUtilities.invokeLater(() -> {
+            LibraryManager manager = new LibraryManager();
+            LibraryGUI gui = new LibraryGUI(manager);
+            gui.setVisible(true);
+        });
     }
 }
