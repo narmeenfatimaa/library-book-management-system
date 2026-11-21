@@ -6,13 +6,14 @@ package library;
  *
  * @author Narmeen Fatima
  * @author Faique Mustafa
+ * @author Usaid Rauf
  */
 public enum BookStatus {
 
     /** The book is in the library and can be borrowed. */
     AVAILABLE("Available"),
 
-    /** The book has been lent out. */
+    /** The book has been lent out to a borrower. */
     ISSUED("Issued"),
 
     /** The book is kept aside for a particular reader. */

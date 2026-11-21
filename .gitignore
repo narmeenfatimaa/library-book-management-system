@@ -22,3 +22,5 @@ nbdist/
 # OS files
 .DS_Store
 Thumbs.db
+library_users.csv
+library_activity.csv
