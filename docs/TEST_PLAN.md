@@ -1,91 +1,67 @@
 # Test Plan and Results
 
-Application: Library Book Management System. Data is kept in memory only, so **start the application fresh before TC01** and run the tests **in order**, because each test builds on the previous one.
+Application: MCS Library Management System (Java Swing) with student and staff accounts. Data is saved to `library_books.csv`, `library_users.csv` and `library_activity.csv`.
 
-**Test environment:** macOS, JDK 17.0.18 (Temurin), IntelliJ IDEA, Java Swing application run from `library.Main`.
-**Tested by:** Narmeen Fatima  **Date:** 18 November 2026
+**Before TC01:** quit the application and delete the three files `library_books.csv`, `library_users.csv` and `library_activity.csv` from the project folder, so everything starts empty. Then run `Main`. Run the tests **in order**, because each test builds on the previous one. "Clear" means clicking the Clear button.
 
-**Summary (as reported by the tester):** 23 test cases run, 23 passed, 0 failed. No bugs were found, so no bug-fix commits were needed.
+**Test environment:** macOS, JDK 17.0.18 (Temurin), IntelliJ IDEA, Java Swing application run from `library.Main`.  
+**Tested by:** [TESTER NAMES]  **Date:** [TEST DATE]
+
+Fill the **Actual result** and **Pass/Fail** columns only after you have run each test yourself. Write what you really saw. Screenshots marked **(required)** must be taken.
 
 | ID | Test case | Steps and input | Expected result | Actual result | Pass/Fail | Screenshot file |
 |---|---|---|---|---|---|---|
-| TC01 | View an empty library | Start the app fresh (Run Main). Do nothing else. | Table has no rows. Bottom line reads: "The library is empty. Add a book using the form above." | Matched the expected result: Table has no rows. Bottom line reads: "The library is empty. Add a book using the form above." | Pass | [TC01_empty_library_main_window.png](../screenshots/TC01_empty_library_main_window.png) |
-| TC02 | Add a valid book | ID `B001`, Title `Clean Code`, Author `Robert Martin` -> click Add. | One row B001 / Clean Code / Robert Martin / Available. Form clears. Green message: Book "Clean Code" (ID B001) added successfully. Bottom line: Total books: 1. | Matched the expected result: One row B001 / Clean Code / Robert Martin / Available. Form clears. Green message: Book "Clean Code" (ID B001) added successfully. Bottom line: Total books: 1. | Pass | [TC02_add_valid.png](../screenshots/TC02_add_valid.png) |
-| TC03 | Add a book with an empty title | Click Clear. ID `B002`, Title (leave empty), Author `Test Author` -> Add. | Error dialog "Title cannot be empty." Red line at bottom. Table still has 1 row. Click OK. | Matched the expected result: Error dialog "Title cannot be empty." Red line at bottom. Table still has 1 row. Click OK. | Pass | [TC03_empty_title.png](../screenshots/TC03_empty_title.png) |
-| TC04 | Add a book with an empty author | Click Clear. ID `B002`, Title `Test Title`, Author (leave empty) -> Add. | Error dialog "Author cannot be empty." Table still has 1 row. Click OK. | Matched the expected result: Error dialog "Author cannot be empty." Table still has 1 row. Click OK. | Pass | [TC04_empty_author.png](../screenshots/TC04_empty_author.png) |
-| TC05 | Add a book with an empty ID | Click Clear. ID (leave empty), Title `Test Title`, Author `Test Author` -> Add. | Error dialog "Book ID cannot be empty." Table still has 1 row. Click OK. | Matched the expected result: Error dialog "Book ID cannot be empty." Table still has 1 row. Click OK. | Pass | TC05_empty_id.png |
-| TC06 | Add a book with a duplicate ID | Click Clear. ID `B001`, Title `Another Book`, Author `Another Author` -> Add. | Error dialog: A book with ID "B001" already exists. Table still has 1 row. Click OK. | Matched the expected result: Error dialog: A book with ID "B001" already exists. Table still has 1 row. Click OK. | Pass | [TC06_duplicate_id.png](../screenshots/TC06_duplicate_id.png) |
-| TC07 | Duplicate ID in different letter case | Click Clear. ID `b001` (lowercase), Title `Another Book`, Author `Another Author` -> Add. | Error dialog: A book with ID "b001" already exists. Table still has 1 row. Click OK. | Matched the expected result: Error dialog: A book with ID "b001" already exists. Table still has 1 row. Click OK. | Pass | TC07_duplicate_id_case.png (optional) |
-| TC08 | View all books | Click Clear. Add ID `B002`, Title `Effective Java`, Author `Joshua Bloch` (Add). Then add ID `B003`, Title `Head First Java`, Author `Kathy Sierra` (Add). | Table shows three rows in this order: B001, B002, B003, all Available. Bottom line: Total books: 3. | Matched the expected result: Table shows three rows in this order: B001, B002, B003, all Available. Bottom line: Total books: 3. | Pass | [TC08_view_all_books.png](../screenshots/TC08_view_all_books.png) |
-| TC09 | Selecting a book fills the form | Click the B002 row in the table. | Form shows ID B002, Title Effective Java, Author Joshua Bloch, Status Available. The row is highlighted. | Matched the expected result: Form shows ID B002, Title Effective Java, Author Joshua Bloch, Status Available. The row is highlighted. | Pass | TC09_select_row.png (optional) |
-| TC10 | Update an existing book | With B002 still selected, change Title to `Effective Java 3rd Edition` -> Update. | Row B002 now shows the new title. Green message: Book B002 updated successfully. Form clears. | Matched the expected result: Row B002 now shows the new title. Green message: Book B002 updated successfully. Form clears. | Pass | [TC10_update_success.png](../screenshots/TC10_update_success.png) |
-| TC11 | Update a book to an ID that belongs to another book | Click the B003 row. Change the ID field to `B001` -> Update. | Error dialog: Cannot update: ID "B001" already belongs to another book. Row B003 is unchanged. Click OK. | Matched the expected result: Error dialog: Cannot update: ID "B001" already belongs to another book. Row B003 is unchanged. Click OK. | Pass | [TC11_update_duplicate_id.png](../screenshots/TC11_update_duplicate_id.png) |
-| TC12 | Update a non-existing book | Click Clear. ID `Z999`, Title `Ghost Book`, Author `Nobody` -> Update. | Error dialog: Cannot update: no book with ID "Z999" exists. Table unchanged (3 rows). Click OK. | Matched the expected result: Error dialog: Cannot update: no book with ID "Z999" exists. Table unchanged (3 rows). Click OK. | Pass | [TC12_update_nonexistent.png](../screenshots/TC12_update_nonexistent.png) |
-| TC13 | Set status to Issued | Click Clear, then click the B001 row. Set the Status box to `Issued` -> Set Status. | Row B001 shows Issued. Green message: Status of book B001 set to Issued. | Matched the expected result: Row B001 shows Issued. Green message: Status of book B001 set to Issued. | Pass | [TC13_status_issued.png](../screenshots/TC13_status_issued.png) |
-| TC14 | Set status to Reserved | Click the B001 row. Set the Status box to `Reserved` -> Set Status. | Row B001 shows Reserved. Green message: Status of book B001 set to Reserved. | Matched the expected result: Row B001 shows Reserved. Green message: Status of book B001 set to Reserved. | Pass | [TC14_status_reserved.png](../screenshots/TC14_status_reserved.png) |
-| TC15 | Set status back to Available | Click the B001 row. Set the Status box to `Available` -> Set Status. | Row B001 shows Available. Green message: Status of book B001 set to Available. | Matched the expected result: Row B001 shows Available. Green message: Status of book B001 set to Available. | Pass | TC15_status_available.png (optional) |
-| TC16 | Set status of a non-existing book | Click Clear. ID `Z999`. Status box `Issued` -> Set Status. | Error dialog: Cannot change status: no book with ID "Z999" exists. Table unchanged. Click OK. | Matched the expected result: Error dialog: Cannot change status: no book with ID "Z999" exists. Table unchanged. Click OK. | Pass | TC16_status_nonexistent.png (optional) |
-| TC17 | Cancel a delete | Click Clear, then click the B003 row -> Delete. In the confirmation dialog click No. | Dialog asks: Delete book B003 (Head First Java)? After No, the table still has 3 rows. | Matched the expected result: Dialog asks: Delete book B003 (Head First Java)? After No, the table still has 3 rows. | Pass | TC17_delete_cancelled.png (optional) |
-| TC18 | Delete an existing book | Click the B003 row -> Delete -> click Yes. | Row B003 disappears. Green message: Book B003 deleted successfully. Bottom line: Total books: 2. | Matched the expected result: Row B003 disappears. Green message: Book B003 deleted successfully. Bottom line: Total books: 2. | Pass | [TC18_delete_success.png](../screenshots/TC18_delete_success.png) |
-| TC19 | Delete a non-existing book | Click Clear. ID `Z999` -> Delete. | Error dialog: Cannot delete: no book with ID "Z999" exists. Table unchanged (2 rows). Click OK. | Matched the expected result: Error dialog: Cannot delete: no book with ID "Z999" exists. Table unchanged (2 rows). Click OK. | Pass | TC19_delete_nonexistent.png (optional) |
-| TC20 | Delete with no ID entered | Click Clear (nothing selected, ID empty) -> Delete. | Error dialog: Book ID cannot be empty. Table unchanged. Click OK. | Matched the expected result: Error dialog: Book ID cannot be empty. Table unchanged. Click OK. | Pass | (no screenshot needed) |
-| TC21 | Clear button | Click the B001 row so the form fills, then click Clear. | All text fields are empty, Status box shows Available, no row is highlighted, the message line is empty. | Matched the expected result: All text fields are empty, Status box shows Available, no row is highlighted, the message line is empty. | Pass | TC21_clear.png (optional) |
-| TC22 | Empty library after deleting all books | Click the B001 row -> Delete -> Yes. Click the B002 row -> Delete -> Yes. | Table has no rows. Bottom line reads: The library is empty. Add a book using the form above. | Matched the expected result: Table has no rows. Bottom line reads: The library is empty. Add a book using the form above. | Pass | [TC22_empty_after_delete.png](../screenshots/TC22_empty_after_delete.png) |
-| TC23 | Data is not kept after closing the app | Add ID `B100`, Title `Temp Book`, Author `Temp Author`. Quit the app (Cmd+Q), then run Main again. | The new window starts empty with the empty-library message (data is kept in memory only). | Matched the expected result: The new window starts empty with the empty-library message (data is kept in memory only). | Pass | (no screenshot needed) |
-
-## Screenshots
-
-All screenshots were taken from the running application.
-
-**TC01 - View an empty library**
-
-![TC01](../screenshots/TC01_empty_library_main_window.png)
-
-**TC02 - Add a valid book**
-
-![TC02](../screenshots/TC02_add_valid.png)
-
-**TC03 - Add a book with an empty title**
-
-![TC03](../screenshots/TC03_empty_title.png)
-
-**TC04 - Add a book with an empty author**
-
-![TC04](../screenshots/TC04_empty_author.png)
-
-**TC06 - Add a book with a duplicate ID**
-
-![TC06](../screenshots/TC06_duplicate_id.png)
-
-**TC08 - View all books**
-
-![TC08](../screenshots/TC08_view_all_books.png)
-
-**TC10 - Update an existing book**
-
-![TC10](../screenshots/TC10_update_success.png)
-
-**TC11 - Update a book to an ID that belongs to another book**
-
-![TC11](../screenshots/TC11_update_duplicate_id.png)
-
-**TC12 - Update a non-existing book**
-
-![TC12](../screenshots/TC12_update_nonexistent.png)
-
-**TC13 - Set status to Issued**
-
-![TC13](../screenshots/TC13_status_issued.png)
-
-**TC14 - Set status to Reserved**
-
-![TC14](../screenshots/TC14_status_reserved.png)
-
-**TC18 - Delete an existing book**
-
-![TC18](../screenshots/TC18_delete_success.png)
-
-**TC22 - Empty library after deleting all books**
-
-![TC22](../screenshots/TC22_empty_after_delete.png)
-
+| TC01 | Sign-in screen (student) | Run `Main`. | The window "MCS Library Management System - Sign In" opens: blue MCS panel on the left, "Student Sign In" on the right with Student selected, a Registration Number field, a Password field, Sign In and a "Create an account" link. |  |  | TC01_login_student.png **(required)** |
+| TC02 | Switch to Staff sign-in | Click the **Staff** button. | Title becomes "Staff Sign In", the label becomes "Staff Username", the Sign In button turns violet, the hint "Default staff account: librarian / mcs2026" appears and the "Create an account" link disappears. |  |  | TC02_login_staff.png **(required)** |
+| TC03 | Wrong password | Staff mode: username `librarian`, password `wrong` -> Sign In. | Red message "Invalid username or password." The password field is emptied. The sign-in window stays open. |  |  | TC03_wrong_password.png |
+| TC04 | Empty sign-in fields | Leave both fields empty -> Sign In. | Message "Please enter your username and password." |  |  | TC04_empty_login.png |
+| TC05 | Register: passwords do not match | Click **Student**, then "Create an account". Full Name `Ayesha Noor`, Registration Number `504001`, Password `secret1`, Confirm `secret2` -> Create Account. | Red message "The two passwords do not match." No account is created. |  |  | TC05_register_mismatch.png **(required)** |
+| TC06 | Register: password too short | Change both password fields to `abc` -> Create Account. | Red message "The password must have at least 6 characters." |  |  | TC06_register_short_password.png |
+| TC07 | Register a student | Set both password fields to `secret1` -> Create Account. | The sign-in form is shown again with `504001` already typed in the username field and the green message "Account created. Please sign in." |  |  | TC07_register_success.png **(required)** |
+| TC08 | Register: duplicate registration number | Click "Create an account". Full Name `Someone Else`, Registration Number `504001`, Password `secret9`, Confirm `secret9` -> Create Account. | Red message: An account with registration number "504001" already exists. |  |  | TC08_register_duplicate.png |
+| TC09 | Register a second student | Full Name `Bilal Ahmed`, Registration Number `504002`, Password `secret2`, Confirm `secret2` -> Create Account. | Back at sign-in with `504002` filled in and the green "Account created." message. |  |  | TC09_register_second.png |
+| TC10 | Role mismatch | Student mode: username `librarian`, password `mcs2026` -> Sign In. | Message "Invalid username or password." (staff credentials do not work in Student mode). |  |  | TC10_role_mismatch.png |
+| TC11 | Staff signs in; empty library shown | Click **Staff**, username `librarian`, password `mcs2026` -> Sign In. | The main window "MCS Library Management System - Staff" opens. Header shows HL, "Head Librarian" and STAFF with tabs Books / Members / Activity Log. Green message "Welcome, Head Librarian." All five dashboard cards show 0. The table area shows "The library is empty." and "Add a book using the form on the left." (This is also the empty-library test.) |  |  | TC11_staff_home_empty_library.png **(required)** |
+| TC12 | Add a valid book | ID `B001`, Title `Clean Code`, Author `Robert Martin`, Category `Software Engineering` -> Add. | One row B001 / Clean Code / Robert Martin / Software Engineering / Available. Form clears. Green message: Book "Clean Code" (ID B001) added successfully. Table card: Total books: 1. Cards: 1 / 1 / 0 / 0 / 0. |  |  | TC12_add_valid.png **(required)** |
+| TC13 | Add a book with an empty title | Click Clear. ID `B002`, Title (empty), Author `Test Author` -> Add. | Error dialog "Title cannot be empty." Still 1 book. Click OK. |  |  | TC13_empty_title.png **(required)** |
+| TC14 | Add a book with an empty author | Click Clear. ID `B002`, Title `Test Title`, Author (empty) -> Add. | Error dialog "Author cannot be empty." Click OK. |  |  | TC14_empty_author.png **(required)** |
+| TC15 | Add a book with an empty ID | Click Clear. ID (empty), Title `Test Title`, Author `Test Author` -> Add. | Error dialog "Book ID cannot be empty." Click OK. |  |  | TC15_empty_id.png |
+| TC16 | Add a book with a duplicate ID | Click Clear. ID `B001`, Title `Another Book`, Author `Another Author` -> Add. | Error dialog: A book with ID "B001" already exists. Still 1 book. Click OK. |  |  | TC16_duplicate_id.png **(required)** |
+| TC17 | View all books | Click Clear. Add four books (Add after each): `B002` / `Signals and Systems` / `Alan Oppenheim` / `Electrical Engineering`; `B003` / `Computer Networks` / `Andrew Tanenbaum` / `Computer Science`; `B004` / `The Art of War` / `Sun Tzu` / `Military History`; `B005` / `Cyber Security Essentials` / `Charles Brooks` / `Cyber Security`. | The table shows 5 rows B001 to B005, all Available. "Total books: 5". Cards: 5 / 5 / 0 / 0 / 0. |  |  | TC17_view_all_books.png **(required)** |
+| TC18 | Selecting a book fills the form | Click the B002 row. | Form shows B002, Signals and Systems, Alan Oppenheim, Category Electrical Engineering, Status Available. The row is highlighted. |  |  | TC18_select_row.png |
+| TC19 | Update an existing book | With B002 selected, change Title to `Signals and Systems 2nd Edition` and Category to `Telecommunications` -> Update. | Row B002 shows the new title and category. Green message: Book B002 updated successfully. Form clears. |  |  | TC19_update_success.png **(required)** |
+| TC20 | Update a book to another book's ID | Click the B003 row. Change the ID field to `B001` -> Update. | Error dialog: Cannot update: ID "B001" already belongs to another book. B003 unchanged. Click OK. |  |  | TC20_update_duplicate_id.png **(required)** |
+| TC21 | Update a non-existing book | Click Clear. ID `Z999`, Title `Ghost Book`, Author `Nobody` -> Update. | Error dialog: Cannot update: no book with ID "Z999" exists. Click OK. |  |  | TC21_update_nonexistent.png **(required)** |
+| TC22 | Issue a book to a student | Click Clear, click the B001 row. Status `Issued` -> Set Status. In the "Issue Book" dialog choose `Ayesha Noor (504001)`, keep 14 days -> OK. | B001 shows Issued, Borrower Ayesha Noor, Due Date = today + 14 days. Green message: Book B001 issued to Ayesha Noor. Due date: (that date). Cards: 5 / 4 / 1 / 0 / 0. |  |  | TC22_issue_result.png (also TC22_issue_dialog.png, taken while the dialog is open) **(required)** |
+| TC23 | Cancel the issue dialog | Click Clear, click the B003 row. Status `Issued` -> Set Status. In the dialog click Cancel. | B003 stays Available. Cards unchanged. |  |  | TC23_issue_cancelled.png |
+| TC24 | Reserve a book for a student | Click the B002 row. Status `Reserved` -> Set Status. In the "Reserve Book" dialog (no loan period) choose `Ayesha Noor (504001)` -> OK. | B002 shows Reserved, Borrower Ayesha Noor, Due Date "-". Green message: Book B002 reserved for Ayesha Noor. Cards: 5 / 3 / 1 / 1 / 0. |  |  | TC24_reserve_result.png **(required)** |
+| TC25 | Issue a third book to the same student | Click the B003 row. Status `Issued` -> Set Status. Choose `Ayesha Noor (504001)`, set 7 days -> OK. | B003 shows Issued to Ayesha Noor. Ayesha now holds 3 books. Cards: 5 / 2 / 2 / 1 / 0. |  |  | TC25_third_book.png |
+| TC26 | Borrowing limit (3 books) | Click the B004 row. Status `Issued` -> Set Status. Choose `Ayesha Noor (504001)` -> OK. | Error dialog: This member already holds 3 books (issued or reserved), which is the limit. B004 stays Available. Click OK. |  |  | TC26_borrowing_limit.png **(required)** |
+| TC27 | An issued book cannot be deleted | Click Clear, click the B001 row (Issued) -> Delete. | Error dialog: Cannot delete: book "B001" is currently issued to Ayesha Noor. Set it to Available first. (No "Delete?" question is asked first.) B001 remains. Click OK. |  |  | TC27_delete_issued_blocked.png **(required)** |
+| TC28 | Return a book | Click Clear, click the B001 row. Status `Available` -> Set Status. | B001 shows Available, Borrower and Due Date show "-". Green message: Book B001 returned. Thank you. Cards: 5 / 3 / 1 / 1 / 0. |  |  | TC28_return_book.png **(required)** |
+| TC29 | Set status of a non-existing book | Click Clear. ID `Z999`. Status `Issued` -> Set Status. | Error dialog: Cannot change status: no book with ID "Z999" exists. (No member dialog appears.) Click OK. |  |  | TC29_status_nonexistent.png |
+| TC30 | Search by text | Click Clear. Type `computer` in the Search box. | Only B003 is shown. Table card shows: Showing 1 of 5 books. |  |  | TC30_search.png **(required)** |
+| TC31 | Search with no match | Replace the search text with `zzz`. | The table is replaced by "No matching books found." and "Try a different search text or status filter." Table card shows: Showing 0 of 5 books. |  |  | TC31_search_no_match.png **(required)** |
+| TC32 | Search by borrower name | Replace the search text with `ayesha`. | B002 and B003 are shown (Showing 2 of 5 books). |  |  | TC32_search_borrower.png |
+| TC33 | Filter by status | Empty the Search box. Set the Status filter (above the table) to `Reserved`, then back to `All Statuses`. | With Reserved only B002 is shown. After All Statuses all 5 books are shown again. |  |  | TC33_status_filter.png **(required)** |
+| TC34 | Sort the table | Click the `ID` column title twice (descending). Click the first row. | B005 is the first row and selecting it fills the form with B005 (Cyber Security Essentials). Click the `ID` title once more to remove the sorting, then click Clear. |  |  | TC34_sorting.png |
+| TC35 | Cancel a delete | Click the B004 row -> Delete -> **No**. | The dialog asks: Delete book B004 (The Art of War)? After No, B004 remains. |  |  | TC35_delete_cancelled.png |
+| TC36 | Delete an existing book | Click the B004 row -> Delete -> **Yes**. | B004 disappears. Green message: Book B004 deleted successfully. Total books: 4. Cards: 4 / 2 / 1 / 1 / 0. |  |  | TC36_delete_success.png **(required)** |
+| TC37 | Delete a non-existing book | Click Clear. ID `Z999` -> Delete. | Error dialog: Cannot delete: no book with ID "Z999" exists. Click OK. |  |  | TC37_delete_nonexistent.png |
+| TC38 | Delete with no ID entered | Click Clear -> Delete. | Error dialog: Book ID cannot be empty. Click OK. |  |  | (no screenshot needed) |
+| TC39 | Clear button | Click the B002 row so the form fills, then click Clear. | All fields empty, Category shows Computer Science (the first item), Status shows Available, no row highlighted, message line empty. |  |  | TC39_clear.png |
+| TC40 | Members page (staff) | Click the **Members** tab. | Table "Registered Students": Ayesha Noor / 504001 with Issued 1, Reserved 1, Fines "-"; Bilal Ahmed / 504002 with 0, 0, "-". "Students: 2". |  |  | TC40_members_page.png **(required)** |
+| TC41 | Activity log (staff) | Click the **Activity Log** tab. | Newest actions first, for example: Deleted book B004, Returned book B001, Issued book B003 (Ayesha Noor (504001)), ... Signed in (librarian), and Created account for 504001 and 504002. The count shows "Latest N of N actions". |  |  | TC41_activity_log.png **(required)** |
+| TC42 | Sign out | Click **Sign Out** (top right). | The main window closes and the sign-in window opens again. |  |  | (no screenshot needed) |
+| TC43 | Student signs in; student portal | Student mode: `504001` / `secret1` -> Sign In. | The window "... - Student" opens with tabs Catalogue and My Account, an AN badge and STUDENT. There is NO form and NO Add/Update/Delete/Set Status buttons, NO Members or Activity tabs, and the table has NO Borrower column. Buttons "Reserve Selected Book" and "Cancel My Reservation" are shown. Cards: Total Books 4, Available 2, My Issued 1, My Reserved 1, My Fines Rs 0. |  |  | TC43_student_home.png **(required)** |
+| TC44 | My Books view | Set the View box to `My Books`. | Only B002 (Reserved) and B003 (Issued) are shown. Table card shows: My books: 2. |  |  | TC44_my_books.png **(required)** |
+| TC45 | Reserve with nothing selected | Set View back to `All Books`. Click **Reserve Selected Book** without selecting a row. | Error dialog: Please select a book in the table first. Click OK. |  |  | TC45_reserve_no_selection.png |
+| TC46 | Student reserves an available book | Click the B005 row -> Reserve Selected Book. | B005 becomes Reserved. Green message: You reserved "Cyber Security Essentials". Please collect it from the library desk. Card My Reserved becomes 2. |  |  | TC46_student_reserve.png **(required)** |
+| TC47 | Student borrowing limit | Click the B001 row (Available) -> Reserve Selected Book. | Error dialog: This member already holds 3 books (issued or reserved), which is the limit. Click OK. |  |  | TC47_student_limit.png |
+| TC48 | Reserve a book that is not available | Click the B003 row (Issued) -> Reserve Selected Book. | Error dialog: Only an available book can be reserved. This book is issued. Click OK. |  |  | TC48_reserve_not_available.png |
+| TC49 | Cancel own reservation | Click the B005 row -> Cancel My Reservation. | B005 is Available again. Green message: Your reservation of "Cyber Security Essentials" was cancelled. My Reserved goes back to 1. |  |  | TC49_cancel_reservation.png **(required)** |
+| TC50 | Cancel a book that is not your reservation | Click the B003 row (Issued) -> Cancel My Reservation. | Error dialog: You can only cancel your own reservation. Click OK. |  |  | TC50_cancel_not_own.png |
+| TC51 | My Account page | Click the **My Account** tab. | Shows the AN badge, Ayesha Noor, "Student - Registration No 504001", Books issued 1, Books reserved 1, Fines to pay "None", and the borrowing rules text. |  |  | TC51_my_account.png **(required)** |
+| TC52 | A second student cannot touch other students' reservations | Sign Out. Sign in as student `504002` / `secret2`. Set View to `My Books`. Then set View to `All Books`, click the B002 row (reserved by Ayesha) -> Cancel My Reservation. | My Books shows "You have no issued or reserved books." and "Reserve a book from the catalogue." Cancel gives the error "You can only cancel your own reservation." The table shows no borrower names. |  |  | TC52_second_student.png **(required)** |
+| TC53 | Data is saved and loaded again | Sign out, then quit the application (Cmd+Q). Do NOT delete the CSV files. Run `Main` again and sign in as `librarian` / `mcs2026`. Then open `library_users.csv` from the project folder in a text editor. | The 4 books (B001, B002, B003, B005) are there with the same statuses and borrowers, the Members page lists both students and the Activity Log still contains the earlier actions. Student accounts still sign in. In `library_users.csv` the passwords are NOT readable: only a salt and a hash are stored. |  |  | TC53_data_saved.png (also TC53_users_file_hashed.png of the text editor) **(required)** |
+| TC54 | Overdue fine (demonstration with the data file) | Quit the application. Open `library_books.csv` in a text editor. On the B003 line change the due date (written like 2026-12-05) to a date 5 days in the past, and save. Run `Main`, sign in as `librarian`. Then click the B003 row, set Status `Available` -> Set Status. | Before returning: B003's Due Date is shown in red bold, the Fine column shows Rs 50 and the Overdue card shows 1. After returning: message "Book B003 returned. Overdue fine: Rs 50 (5 days late)." (the fine is Rs 10 x the number of days you chose). |  |  | TC54_overdue_fine.png |
