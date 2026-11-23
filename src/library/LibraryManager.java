@@ -49,10 +49,9 @@ public class LibraryManager {
      */
     public void addBook(String id, String title, String author, String category) {
         String cleanId = requireText(id, "Book ID");
-        String cleanTitle = requireText(title, "Title");
-        String cleanAuthor = requireText(author, "Author");
+        String cleanTitle = requireNonNumericText(title, "Title");
+        String cleanAuthor = requireNonNumericText(author, "Author");
         String cleanCategory = requireText(category, "Category");
-
         if (findIndexById(cleanId) != -1) {
             throw new IllegalArgumentException(
                     "A book with ID \"" + cleanId + "\" already exists.");
@@ -225,10 +224,9 @@ public class LibraryManager {
             String newAuthor, String newCategory) {
         String cleanCurrentId = requireText(currentId, "Book ID");
         String cleanNewId = requireText(newId, "Book ID");
-        String cleanTitle = requireText(newTitle, "Title");
-        String cleanAuthor = requireText(newAuthor, "Author");
+        String cleanTitle = requireNonNumericText(newTitle, "Title");
+        String cleanAuthor = requireNonNumericText(newAuthor, "Author");
         String cleanCategory = requireText(newCategory, "Category");
-
         int currentIndex = findIndexById(cleanCurrentId);
         if (currentIndex == -1) {
             throw new IllegalArgumentException(
@@ -478,5 +476,21 @@ public class LibraryManager {
             throw new IllegalArgumentException(fieldName + " cannot be empty.");
         }
         return value.trim();
+    }
+    /**
+     * Removes spaces around a text value, rejects empty values, and rejects
+     * values made entirely of digits (such as "123").
+     *
+     * @param value     the text to check
+     * @param fieldName the name of the field, used in the error message
+     * @return the trimmed text
+     * @throws IllegalArgumentException if the text is null, empty, or only digits
+     */
+    private static String requireNonNumericText(String value, String fieldName) {
+        String cleaned = requireText(value, fieldName);
+        if (cleaned.matches("\\d+")) {
+            throw new IllegalArgumentException(fieldName + " cannot be only numbers.");
+        }
+        return cleaned;
     }
 }
